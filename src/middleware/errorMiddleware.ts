@@ -7,6 +7,7 @@ const errorMiddleware = (
   next: NextFunction
 ) => {
   res.status(error.statusCode).json({
+    statusCode: error.statusCode,
     message: error.message,
   });
 };

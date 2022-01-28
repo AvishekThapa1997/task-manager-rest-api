@@ -7,6 +7,7 @@ const asyncWrapper = (
     try {
       await operation(req, res, next);
     } catch (err) {
+      console.log(err);
       next(new HttpException());
     }
   };

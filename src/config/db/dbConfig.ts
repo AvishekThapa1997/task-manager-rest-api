@@ -8,7 +8,7 @@ const dbConfig = new Sequelize(
   {
     host: dBCredentials.host,
     dialect: "mysql",
-    logging: false,
+    logging: true,
     define: {
       freezeTableName: true,
     },

@@ -8,6 +8,7 @@ import {
   getTask,
   updateTask,
   deleteTask,
+  updateTaskCompletionStatus,
 } from "../controller/taskController";
 
 const taskRouter = Router();
@@ -47,10 +48,15 @@ taskRouter
           min: 6,
         })
         .withMessage(MESSAGE.taskTooShort),
-      body("isCompleted", MESSAGE.invalidTaskCompletedInput).isBoolean(),
     ],
     validationMiddleware,
     updateTask
   )
   .delete(deleteTask);
+taskRouter.patch(
+  "/tasks/:taskId/complete",
+  body("isCompleted", MESSAGE.invalidTaskCompletedInput).isBoolean(),
+  validationMiddleware,
+  updateTaskCompletionStatus
+);
 export default taskRouter;

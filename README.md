@@ -88,6 +88,7 @@ Required fields : **task**,**isCompleted**
 
 ```javascript
 {
+    "statusCode":{statusCode}
     "message": "No Task with id {taskId}"
 }
 ```
@@ -101,13 +102,10 @@ PATCH /api/tasks/:taskId
 ```javascript
 {
     "task" : "Second Production Task",
-    "isCompleted" : true
 }
 ```
 
-Required fields : **task**,**isCompleted** , returns updated Task
-
-- **isCompleted will accept either true or false only**
+Required fields : **task**, returns updated Task
 
 - Response Example
 
@@ -127,6 +125,44 @@ Required fields : **task**,**isCompleted** , returns updated Task
 
 ```javascript
 {
+    "statusCode":{statusCode}
+    "message": "No Task with id {taskId}"
+}
+```
+
+**UPDATE TASK COMPLETION STATUS**
+
+PATCH /api/tasks/:taskId/complete
+
+- Request Body
+
+```javascript
+{
+    "isCompleted" : true,
+}
+```
+
+Required fields : **isCompleted**, returns updated Task
+
+- Response Example
+
+```javascript
+{
+    "data": {
+        "id": 3,
+        "task": "Second Production Task",
+        "isCompleted": true,
+        "updatedAt": "2022-01-28T07:34:15.649Z",
+        "createdAt": "2022-01-28T07:34:15.649Z"
+    }
+}
+```
+
+- If taskId is not found,Response will be
+
+```javascript
+{
+    "statusCode":{statusCode}
     "message": "No Task with id {taskId}"
 }
 ```
@@ -137,7 +173,7 @@ DELETE /api/tasks/:taskId
 
 - Returns deleted task.
 
-- - Response Example
+- Response Example
 
 ```javascript
 {
@@ -156,6 +192,7 @@ DELETE /api/tasks/:taskId
 
 ```javascript
 {
+    "statusCode":{statusCode}
     "message": "No Task with id {taskId}"
 }
 ```

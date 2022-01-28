@@ -44,26 +44,54 @@ export const getTask = asyncWrapper(
 export const updateTask = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const taskId = +req.params.taskId;
-    const newTask = req.body as TaskCreationAttributes;
-    const oldTask = await taskService.getTask(taskId);
+    const taskBody = req.body as { task: string };
+    const oldTask = await taskService.getTask(taskId, true);
     if (!oldTask) {
       return next(new TaskNotFound(taskId));
     }
-    const [noOfTaskUpdated] = await taskService.updateTask(taskId, newTask);
+    const [noOfTaskUpdated] = await taskService.updateTask(
+      taskId,
+      taskBody.task
+    );
+    if (!noOfTaskUpdated) {
+      return next(new HttpException());
+    }
+    res.status(200).send({
+      data: {
+        ...oldTask,
+        task: taskBody.task,
+      },
+    });
+  }
+);
+export const updateTaskCompletionStatus = asyncWrapper(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const taskId = +req.params.taskId;
+    const oldTask = await taskService.getTask(taskId, true);
+    const taskCompletionStatus = req.body as { isCompleted: string };
+    if (!oldTask) {
+      return next(new TaskNotFound(+taskId));
+    }
+    const [noOfTaskUpdated] = await taskService.updateTaskCompletionStatus(
+      taskId,
+      taskCompletionStatus.isCompleted === "true"
+    );
     if (!noOfTaskUpdated) {
       return next(new HttpException());
     }
     res.status(201).send({
-      data: newTask,
+      data: {
+        ...oldTask,
+        isCompleted: taskCompletionStatus.isCompleted === "true",
+      },
     });
   }
 );
-
 export const deleteTask = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const taskId = +req.params.taskId;
-    const task = await taskService.getTask(taskId);
-    if (!task) {
+    const oldTask = await taskService.getTask(taskId);
+    if (!oldTask) {
       return next(new TaskNotFound(+taskId));
     }
     const taskDeleted = await taskService.deleteTask(taskId);
@@ -71,8 +99,8 @@ export const deleteTask = asyncWrapper(
       return next(new HttpException());
     }
     res.status(200).send({
-      message: "Successfull deleted",
-      data: task,
+      message: "Successfully deleted",
+      data: oldTask,
     });
   }
 );
