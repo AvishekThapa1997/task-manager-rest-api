@@ -3,6 +3,7 @@ import taskRouter from "./route/taskRoute";
 import errorMiddleware from "./middleware/errorMiddleware";
 import notFoundMiddleware from "./middleware/404";
 import dbConfig from "./config/db/dbConfig";
+import enabledCors from "./middleware/enabledCors";
 const app = express();
 app.use(
   express.urlencoded({
@@ -10,6 +11,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(enabledCors);
 app.use("/api", taskRouter);
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
