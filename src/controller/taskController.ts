@@ -18,6 +18,9 @@ export const getTasks = asyncWrapper(
 export const createTask = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const task = req.body as TaskCreationAttributes;
+    if (task.isCompleted === null || req.body.isCompleted === "") {
+      task.isCompleted = false;
+    }
     const taskCreated = await taskService.createTask(task);
     if (!taskCreated) {
       return next(new TaskNotCreated());
@@ -44,7 +47,7 @@ export const getTask = asyncWrapper(
 export const updateTask = asyncWrapper(
   async (req: Request, res: Response, next: NextFunction) => {
     const taskId = +req.params.taskId;
-    const taskBody = req.body as { task: string };
+    const taskBody = req.body as TaskCreationAttributes;
     const oldTask = await taskService.getTask(taskId, true);
     if (!oldTask) {
       return next(new TaskNotFound(taskId));

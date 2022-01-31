@@ -8,7 +8,6 @@ const validationMiddleware = (
   const validationErrors = validationResult(req);
   if (!validationErrors.isEmpty()) {
     const errors: any = {};
-    console.log(errors);
     validationErrors
       .array({
         onlyFirstError: true,

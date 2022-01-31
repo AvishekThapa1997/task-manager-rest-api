@@ -13,10 +13,10 @@ export const getTask = (taskId: number, raw: boolean = false) => {
   });
 };
 
-export const updateTask = (taskId: number, taskToBeUpdated: string) => {
+export const updateTask = (taskId: number, task: string) => {
   return Task.update(
     {
-      task: taskToBeUpdated,
+      task: task,
     },
     {
       where: {

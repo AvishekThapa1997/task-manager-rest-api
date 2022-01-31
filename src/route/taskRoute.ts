@@ -26,7 +26,12 @@ taskRouter
           min: 6,
         })
         .withMessage(MESSAGE.taskTooShort),
-      body("isCompleted", MESSAGE.invalidTaskCompletedInput).isBoolean(),
+      body("isCompleted", MESSAGE.invalidTaskCompletedInput).custom((value) => {
+        if (value) {
+          return value.toString() === "true" || value.toString() === "false";
+        }
+        return true;
+      }),
     ],
     validationMiddleware,
     createTask
@@ -48,6 +53,12 @@ taskRouter
           min: 6,
         })
         .withMessage(MESSAGE.taskTooShort),
+      body("isCompleted", MESSAGE.invalidTaskCompletedInput).custom((value) => {
+        if (value) {
+          return value.toString() === "true" || value.toString() === "false";
+        }
+        return true;
+      }),
     ],
     validationMiddleware,
     updateTask

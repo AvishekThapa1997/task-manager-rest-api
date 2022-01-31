@@ -46,7 +46,7 @@ https://restapi-task-manager.herokuapp.com
 }
 ```
 
-Required fields : **task**,**isCompleted**
+Required fields : **task**
 
 - **isCompleted will accept either true or false only**
 
